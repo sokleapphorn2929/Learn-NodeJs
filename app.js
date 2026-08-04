@@ -108,5 +108,66 @@
 //     console.log('Server is running! Open http://localhost:3000 in your browser.');
 // })
 
-// ============================HTTP Module====================================
+// ============================PATH MODULE====================================
 
+// import path from 'path';
+// const path = require('path');
+
+// console.log(path.join('files', 'example.txt')); // files/example.txt
+// console.log(path.extname('example.pdf')); // .pdf
+// console.log(path.basename('files/example.txt')); // example.txt
+
+// ============================OS====================================
+
+// import os from 'os';
+
+// console.log(os.platform()); // win32
+// console.log(os.totalmem()); // 16953597952
+// console.log(os.cpus().length); // 16
+
+// ============================CALL BACK====================================
+
+// function getUser(id, callback){ //callback is not normal parameter that recieve value but it recieve the anonymous function
+//     // setTimeout(()=>{
+//     //     callback({id,name:"sokleap"});
+//     // },10000) //10s
+
+//     callback({id,name:"sokleap"});
+// }
+
+// getUser(1, (user)=>{console.log(user);})
+
+// ============================PROMISE====================================
+
+// myPromise is an Object
+// const myPromise = new Promise((resolve, reject)=>{
+//     const result = 9+1;
+//     if(result === 10){
+//         resolve("Correct Answer");
+//     }
+//     else{
+//         reject("Wrong Answer");
+//     }
+// });
+
+// myPromise
+// .then((message)=>console.log(message))
+// .catch((message)=>console.log(message))
+
+// ============================FETCH API====================================
+
+const apiUrl = "https://pharmacy-system-backend-j77b.onrender.com/api/products";
+
+fetch(apiUrl)
+.then((response)=>{
+    if(!response.ok){
+        throw new Error("Response Error: "+response.status);
+    }
+
+    return response.json();
+})
+.then((data)=>{
+    const resp = data.data.map(item=>item.product_name).join("\n");
+
+    console.log(resp);
+})
