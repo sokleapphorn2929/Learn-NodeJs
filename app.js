@@ -156,18 +156,66 @@
 
 // ============================FETCH API====================================
 
-const apiUrl = "https://pharmacy-system-backend-j77b.onrender.com/api/products";
+// const apiUrl = "https://pharmacy-system-backend-j77b.onrender.com/api/products";
 
-fetch(apiUrl)
-.then((response)=>{
-    if(!response.ok){
-        throw new Error("Response Error: "+response.status);
-    }
+// fetch(apiUrl)
+// .then((response)=>{
+//     if(!response.ok){
+//         throw new Error("Response Error: "+response.status);
+//     }
 
-    return response.json();
-})
-.then((data)=>{
-    const resp = data.data.map(item=>item.product_name).join("\n");
+//     return response.json();
+// })
+// .then((data)=>{
+//     const resp = data.data.map(item=>item.product_name).join("\n");
 
-    console.log(resp);
-})
+//     console.log(resp);
+// })
+
+// ============================MAKE HTTP SERVER====================================
+
+// import http from 'http';
+
+// // create function #server
+// const server = http.createServer((req, res)=>{ //create anonymous function with return (req, res) =>
+
+//     function status(statusCode){
+//         return res.writeHead(statusCode, {"content-type":"text/plain; charset=utf-8"});
+//     };
+
+//     if(req.url === "/"){
+//         status(200);
+//         res.end("Welcome to #Home");
+//     }
+//     else  if(req.url === "/about"){
+//         status(200);
+//         res.end("Now , you are in the #About");
+//     }
+//     else{
+//         status(404); // url not found
+//         res.end("Content not found");
+//     }
+// });
+
+// server.listen(3000, ()=>{
+//     console.log("Sever is running.\nUrl: http://localhost:3000");
+// })
+
+// ============================DATA FROM REQUEST====================================
+
+// import http from 'http';
+
+// const server = http.createServer((req, res) => {
+//     let body = "Hello Brother.";
+
+//     req.on('data', (chuck) => {body += chuck;});
+
+//     req.on('end', () => {
+//         console.log(body);
+//         res.end("Data Receive Successful.\n"+body);
+//     })
+// });
+
+// server.listen(3000, ()=>{
+//     console.log("Sever is running.\nUrl: http://localhost:3000");
+// })
