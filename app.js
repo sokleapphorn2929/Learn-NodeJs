@@ -342,44 +342,153 @@
 
 // =========IMPROVE CREATE SCHEMA & MODEL SAVE DATA TO MONGODB COMPASS=================
 
-import mongoose, { Schema } from "mongoose";
+// import mongoose, { Schema } from "mongoose";
 
-mongoose.connect("mongodb://localhost:27017/NodeJsApp")
-.then(() => {
-    sendData();
-})
-.catch((error) => {
-    console.log("Connecto to mongodb fail.\n",error);
-});
+// mongoose.connect("mongodb://localhost:27017/NodeJsApp")
+// .then(() => {
+//     sendData();
+// })
+// .catch((error) => {
+//     console.log("Connecto to mongodb fail.\n",error);
+// });
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    university: {
-        type: String,
-        required: true
-    },
-    createAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+// const userSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: true
+//     },
+//     university: {
+//         type: String,
+//         required: true
+//     },
+//     createAt: {
+//         type: Date,
+//         default: Date.now
+//     }
+// });
 
-const User = mongoose.model("User", userSchema);
+// const User = mongoose.model("User", userSchema);
 
-async function sendData(){
-    try {
-        const newUser = new User({
-            name: "Yon Chanranuth",
-            university: "Royal University of Phnom Penh",
-        });
+// async function sendData(){
+//     try {
+//         const newUser = new User({
+//             name: "Yon Chanranuth",
+//             university: "Royal University of Phnom Penh",
+//         });
 
-        const saveUser = await newUser.save();
+//         const saveUser = await newUser.save();
 
-        console.log("Create User data successful.",saveUser);
-    } catch (error) {
-        console.log("Create User data unsuccessful:\n",error)
-    }
-}
+//         console.log("Create User data successful.",saveUser);
+//     } catch (error) {
+//         console.log("Create User data unsuccessful:\n",error);
+//     }
+// }
+
+// ============================SEND DATA TO CONNECTION DB====================================
+
+// import connector from "./database/connection.js";
+// import mongoose from "mongoose";
+
+// const userSchema = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     university: {type: String, required: true},
+//     createAt: {type: Date, default: Date.now}
+// });
+
+// // users is collection or table name
+// // Users is mongoose model name
+// const users = mongoose.model("Users", userSchema);
+
+// async function postData() {
+//     try {
+//         const saveUser = await users.insertMany([
+//             {
+//                 name: "Phorn Sokleap",
+//                 university: "Royal University of Phnom Penh",
+//             },
+//             {
+//                 name: "Yon Chanranuth",
+//                 university: "Royal University of Phnom Penh",
+//             },
+//             {
+//                 name: "Moeun Samet",
+//                 university: "Royal University of Phnom Penh",
+//             }
+//         ]);
+
+//         console.log("Send Data Successful.",saveUser);
+
+//     } catch (error) {
+//         console.log("Send Data Fail:\n",error);
+//     }
+// }
+
+// connector()
+// .then(() => {
+//     postData();
+// })
+// .catch((error) => {
+//     console.log(error);
+// })
+
+// ============================GET DATA TO CONNECTION DB====================================
+
+// import connector from "./database/connection.js"
+// import mongoose from "mongoose";
+
+// const userSchema = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     university: {type: String, required: true},
+//     createAt: {type: Date, default: Date.now}
+// });
+
+// const Users = new mongoose.model("Users",userSchema);
+
+// async function getData() {
+//     try {
+//         const allUsers = await Users.find();
+
+//         console.log("Read Data Successful.\n"+allUsers);
+//     } catch (error) {
+//         console.log("Error:\n",error);
+//     }
+// }
+
+// connector()
+// .then(() => {
+//     getData();
+// })
+// .catch((error) => {
+//     console.log(error);
+// })
+
+// ============================FIND DATA TO CONNECTION DB====================================
+
+// import connector from "./database/connection.js"
+// import mongoose from "mongoose";
+
+// const userSchema = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     university: {type: String, required: true},
+//     createAt: {type: Date, default: Date.now}
+// });
+
+// const Users = new mongoose.model("Users",userSchema);
+
+// async function findData() {
+//     try {
+//         const allUsers = await Users.findById("6a74c0082d22c57f73075d9b");
+
+//         console.log("Read Data Successful.\n"+allUsers);
+//     } catch (error) {
+//         console.log("Error:\n",error);
+//     }
+// }
+
+// connector()
+// .then(() => {
+//     findData();
+// })
+// .catch((error) => {
+//     console.log(error);
+// })
