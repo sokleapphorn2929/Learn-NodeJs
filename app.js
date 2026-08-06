@@ -219,3 +219,167 @@
 // server.listen(3000, ()=>{
 //     console.log("Sever is running.\nUrl: http://localhost:3000");
 // })
+
+
+// ============================CREATE WEB SERVER WITH EXPRESSJS====================================
+
+// import express from 'express';
+
+// const app = express();
+
+// app.get("/", (req, res) => {
+//     res.send("Hello from ExpressJs");
+// });
+
+// app.listen(3000, () => {
+//     console.log("http://localhost:3000");
+// });
+
+// ============================SEND AS JSON====================================
+
+// import express from 'express';
+
+// const app = express();
+
+// app.get("/api/user",(req, res) => {
+//     res.json({
+//         id: 1,
+//         name: "Sokleap",
+//         age: 21,
+//         university: "Royal University of Phnom Penh"
+//     });
+// });
+
+// app.listen(9999, () => {
+//     console.log("http://localhost:9999/api/user");
+// });
+
+// ============================ROUTING====================================
+
+// import express from 'express';
+
+// const app = express();
+
+// app.get("/api/student", (req, res) => {
+//     res.send("Show all student successful.");
+// });
+
+// app.post("/api/student", (req, res) => {
+//     res.json({
+//         message: "Create student successful.",
+//         data: req.body
+//     })
+// });
+
+// app.get("/api/student/:id", (req, res) => {
+//     res.send(`Student detail:\n${req.params.id}`);
+// });
+
+// app.listen(3000, () => {
+//     console.log("http://localhost:3000");
+// });
+
+// ============================ROUTING WITH EXPRESS====================================
+
+// import express, { json } from 'express';
+// import studentRoute from "./routes/student.js";
+
+// const app = express();
+
+// app.use(express.json());
+
+// app.use("/student", studentRoute);
+
+// app.listen(3000, () => {
+//     console.log("http://localhost:3000");
+// })
+
+// import express from 'express';
+// import productRoute from './routes/student.js';
+
+// const app = express();
+
+// app.use("/product", productRoute);
+
+// app.listen(3000, () => {
+//     console.log("http://localhost:3000/product");
+// });
+
+// ============================MONGODB DATABASE CONNECTION====================================
+
+// import mongoose from "mongoose";
+
+// mongoose.connect('mongodb://localhost:27017/NodeJsApp')
+// .then(() => {
+//     console.log("mongodb connection successful.");
+// })
+// .catch((error) => {
+//     console.log("mongodb connection fail:\n" + error);
+// })
+
+// ============================CREATE SCHEMA AND MODEL====================================
+
+// // import mongoose from "mongoose";
+
+// // create userSchema object
+// const userSchema = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     email: {type: String, required: true, unique: true},
+//     age: {type: Number},
+//     createAt: {type: Date, default: Date.now}
+// });
+
+// //create User model
+// const User = mongoose.model('User', userSchema);
+
+// const newUser = new User({
+//     name: "Ranuth",
+//     email: "nuthcute@gmail.com",
+//     age: 22
+// });
+
+// await newUser.save();
+
+// =========IMPROVE CREATE SCHEMA & MODEL SAVE DATA TO MONGODB COMPASS=================
+
+import mongoose, { Schema } from "mongoose";
+
+mongoose.connect("mongodb://localhost:27017/NodeJsApp")
+.then(() => {
+    sendData();
+})
+.catch((error) => {
+    console.log("Connecto to mongodb fail.\n",error);
+});
+
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    university: {
+        type: String,
+        required: true
+    },
+    createAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+const User = mongoose.model("User", userSchema);
+
+async function sendData(){
+    try {
+        const newUser = new User({
+            name: "Yon Chanranuth",
+            university: "Royal University of Phnom Penh",
+        });
+
+        const saveUser = await newUser.save();
+
+        console.log("Create User data successful.",saveUser);
+    } catch (error) {
+        console.log("Create User data unsuccessful:\n",error)
+    }
+}

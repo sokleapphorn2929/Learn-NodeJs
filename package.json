@@ -1,6 +1,7 @@
 {
-    "type": "module",
-    "dependencies": {
-        "express": "^5.2.1"
-    }
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.9.1"
+  },
+  "type": "module"
 }
