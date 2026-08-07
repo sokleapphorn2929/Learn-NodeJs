@@ -492,3 +492,112 @@
 // .catch((error) => {
 //     console.log(error);
 // })
+
+// ============================UPDATE DATA TO CONNECTION DB====================================
+
+// import mongoose from "mongoose";
+// import connector from "./database/connection.js";
+
+// // This is the JavaScript Object use for validate data
+// const user_validator = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     university: {type: String, required: true},
+//     createAt: {type: Date, default: Date.now}
+// });
+
+// // This is the JavaScript Object use for create model
+// const user = mongoose.model("users_data", user_validator);
+
+// async function updateData() {
+//     try {
+//         const updateUser = await user.findByIdAndUpdate("6a74c0082d22c57f73075d9b", {
+//             name: "Phorn Sokleap"
+//         })
+
+//         if(!updateUser){
+//             console.log("Collection is not found!")
+//         }
+//         else{
+//             console.log("Update Successfull.")
+//         }
+
+//     } catch (error) {
+//         console.log("Error:\n",error);
+//     }
+// }
+
+// connector()
+// .then(() => {
+//     updateData();
+// })
+// .catch((error) => {
+//     console.log(error)
+// });
+
+// ============================DELETE DATA FROM DB====================================
+
+// import mongoose from "mongoose";
+// import connector from "./database/connection.js";
+
+// // Create object of validator
+// const user_validator = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     university: {type: String, required: true},
+//     createAt: {type: Date, default: Date.now}
+// });
+
+// // Create object of model
+// const UserModel = new mongoose.model("users", user_validator);
+
+// // Create function for execute the process of data
+// async function deleteData(){
+//     try {
+//         const findForDelete = await UserModel.findByIdAndDelete(
+//             "6a74c0082d22c57f73075d9d",
+//         );
+
+//         if(findForDelete){
+//             console.log("Delete User Successful.");
+//         }
+//         else{
+//             console.log("User Id Not Found.");
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+// // Call function to execute and handle the error
+// connector()
+// .then(() => {
+//     deleteData();
+// })
+// .catch((error) => {
+//     console.log(error.message);
+// })
+
+// ============================FULL RESTFUL API====================================
+
+import express, { json } from 'express';
+import route from './routes/api.js';
+import cn from './database/connection.js';
+
+// set variable app equal to method express from model express
+const app = express();
+
+// parse or convert data from database to json()
+app.use(express.json());
+
+// set prefix api to route from ./routes/api.js
+app.use("/api", route);
+
+// create web server
+cn()
+.then(() => {
+    app.listen(3000, () => {
+        console.log("http://localhost:3000");
+    })
+})
+.catch((error) => {
+    console.log(error);
+});
