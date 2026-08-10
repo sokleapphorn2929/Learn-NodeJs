@@ -578,26 +578,39 @@
 
 // ============================FULL RESTFUL API====================================
 
-import express, { json } from 'express';
-import route from './routes/api.js';
-import cn from './database/connection.js';
+// import express, { json } from 'express';
+// import route from './routes/api.js';
+// import cn from './database/connection.js';
 
-// set variable app equal to method express from model express
-const app = express();
+// // set variable app equal to method express from model express
+// const app = express();
 
-// parse or convert data from database to json()
-app.use(express.json());
+// // parse or convert data from database to json()
+// app.use(express.json());
 
-// set prefix api to route from ./routes/api.js
-app.use("/api", route);
+// // set prefix api to route from ./routes/api.js
+// app.use("/api", route);
 
-// create web server
-cn()
+// // create web server
+// cn()
+// .then(() => {
+//     app.listen(3000, () => {
+//         console.log("http://localhost:3000");
+//     })
+// })
+// .catch((error) => {
+//     console.log(error);
+// });
+
+// ============================New Practice====================================
+
+import myConnection from "./database/connection.js";
+import migrate from "./model/Admin.js"
+
+myConnection()
 .then(() => {
-    app.listen(3000, () => {
-        console.log("http://localhost:3000");
-    })
+    migrate();
 })
 .catch((error) => {
-    console.log(error);
-});
+    console.log("Migration is fail.")
+})

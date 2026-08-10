@@ -1,13 +1,16 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
-// create object validator
-const user_validator = new mongoose.Schema({
-    name: {type: String, required: true},
-    university: {type: String, required: true},
-    createAt: {type: Date, default: Date.now}
-})
+// // create object validator
+// const user_validator = new mongoose.Schema({
+//     name: {type: String, required: true},
+//     university: {type: String, required: true},
+//     createAt: {type: Date, default: Date.now}
+// })
 
-// create object model
-const user_model = new mongoose.model("users", user_validator);
+// // create object model
+// const user_model = new mongoose.model("users", user_validator);
 
-export default user_model;
+// export default user_model;
+
+// =========================New Migration and Model=======================
+
