@@ -40,7 +40,12 @@ router.get('/user/:id', async (req, res) => {
             })
         }
 
-        res.status(200).json(users);
+        res.status(200).json(
+            {
+                message: "Admin found successful.",
+                data: users
+            }
+        );
     } catch (error) {
         res.status(404).json({
             message: error.message

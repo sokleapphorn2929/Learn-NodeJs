@@ -40,4 +40,74 @@ router.post('/admin', async (req, res) => {
     }
 })
 
+router.get('/admin/:id', async (req, res) => {
+    try {
+        const admins = await admin_model.findById(req.params.id);
+
+        res.status(200).json(
+            {
+                message: "Admin was found successful.",
+                data: admins
+            }
+        );
+    } catch (error) {
+        res.status(404).json(
+            {
+                message: "Admin not found!",
+                error: error.message
+            }
+        )
+    }
+})
+
+router.put('/admin/:id', async (req, res) => {
+    try {
+        // create object for update (updateAt)
+        const updateData = {
+            ...req.body,
+            updateAt: Date.now()
+        }
+
+        const admins = await admin_model.findByIdAndUpdate(req.params.id, 
+            updateData, 
+            {
+                new: true
+            }
+        );
+
+        res.status(200).json(
+            {
+                message: "Admin was updated successful.",
+                data: admins
+            }
+        );
+    } catch (error) {
+        res.status(404).json(
+            {
+                message: "Admin not found!",
+                error: error.message
+            }
+        )
+    }
+})
+
+router.delete('/admin/:id', async (req, res) => {
+    try {
+        const admins = await admin_model.findByIdAndDelete(req.params.id);
+
+        res.status(200).json(
+            {
+                message: "Admin was deleted successful."
+            }
+        )
+    } catch (error) {
+        res.status(400).json(
+            {
+                message: "Admin not found!",
+                error: error.message
+            }
+        )
+    }
+})
+
 export default router;
