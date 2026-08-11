@@ -1,17 +1,21 @@
 import mongoose from "mongoose";
 
-// create validator object
+// create validor object for collection
 const admin_validator = new mongoose.Schema(
     {
-        admin_name: {type: String, required: true, unique: true},
-        admin_role: {type: String, required: true},
-        admin_address: {type: String, required: true},
+        username: {type: String, required: true},
+        gender: {type: String, required: true},
+        address: {type: String, required: true},
+        password: {type: String, required: true},
         createAt: {type: Date, default: Date.now},
         updateAt: {type: Date, default: null}
     }
 );
 
-// create object for model
-const admin_model = mongoose.model("admins", admin_validator);
+// create model object for migration collection
+const admin_model = mongoose.model(
+    "admins",
+    admin_validator
+);
 
 export default admin_model;

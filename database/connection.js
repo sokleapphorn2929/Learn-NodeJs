@@ -17,15 +17,15 @@
 
 import mongoose from "mongoose";
 
-const dbConnection = () => {
+function connector() {
     return mongoose.connect("mongodb://localhost:27017/NodeJsApp")
     .then(() => {
-        console.log("Connection is successful.");
+        console.log("Your connection is successful.");
     })
-    .catch((error)=>{
-        console.log("Connection is fail.");
+    .catch((error) => {
+        console.log("Your connection is fail.")
         throw error;
-    });
+    })
 }
 
-export default dbConnection;
+export default connector;

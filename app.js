@@ -604,13 +604,27 @@
 
 // ============================New Practice====================================
 
-import myConnection from "./database/connection.js";
-import migrate from "./model/Admin.js"
+import myConnection from './database/connection.js';
+import express from 'express';
+import route from './routes/adminApi.js'
 
+// create variable variable for mothod express from express module
+const app = express();
+
+// convert data to json concept
+app.use(express.json());
+
+// create prefix for router
+app.use("/api", route);
+
+// create web sever
 myConnection()
 .then(() => {
-    migrate();
+    // listen to port 3000
+    app.listen(3000, () => {
+        console.log("http://localhost:3000/api/admin");
+    })
 })
 .catch((error) => {
-    console.log("Migration is fail.")
+    console.log(error);
 })
