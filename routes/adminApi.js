@@ -1,5 +1,6 @@
 import express from 'express';
-import admin_model from '../model/Admin.js'
+import admin_model from '../model/Admin.js';
+import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
@@ -23,7 +24,13 @@ router.get('/admin', async (req, res) => {
 
 router.post('/admin', async (req, res) => {
     try {
-        const newAdmin = new admin_model(req.body);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const newAdmin = new admin_model({
+            ...req.body,
+            password: hashedPassword
+        });
+
         await newAdmin.save();
         res.status(201).json(
             {
@@ -33,6 +40,49 @@ router.post('/admin', async (req, res) => {
         )
     } catch (error) {
         res.status(400).json(
+            {
+                message: error.message
+            }
+        )
+    }
+})
+
+router.post('/admin/login', async (req, res) => {
+    try {
+        const {username, password} = req.body;
+        // find username
+        const admin = await admin_model.findOne({username});
+
+        if(!admin){
+            return res.status(404).json(
+                {
+                    message: "Admin not found!"
+                }
+            )
+        }
+
+        const validePassword = await bcrypt.compare(password, admin.password);
+
+        if(!validePassword){
+            return res.status(401).json(
+                {
+                    message: "Password is invalid"
+                }
+            );
+        }
+
+        res.status(200).json(
+            {
+                message: "Login successful.",
+                data: {
+                    id: admin._id,
+                    username: admin.username
+                }
+            }
+        )
+
+    } catch (error) {
+        res.status(401).json(
             {
                 message: error.message
             }
@@ -62,9 +112,12 @@ router.get('/admin/:id', async (req, res) => {
 
 router.put('/admin/:id', async (req, res) => {
     try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
         // create object for update (updateAt)
         const updateData = {
             ...req.body,
+            password: hashedPassword,
             updateAt: Date.now()
         }
 
