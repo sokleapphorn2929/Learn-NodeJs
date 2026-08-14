@@ -1,6 +1,7 @@
 import express from 'express';
 import admin_model from '../model/Admin.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -47,46 +48,107 @@ router.post('/admin', async (req, res) => {
     }
 })
 
+// router.post('/admin/login', async (req, res) => {
+    
+//     try {
+
+//         const {username, password} = req.body;
+//         // find username
+//         const admin = await admin_model.findOne({username});
+
+//         if(!admin){
+//             return res.status(404).json(
+//                 {
+//                     message: "Admin not found!"
+//                 }
+//             )
+//         }
+
+//         // compare password with hashed password
+//         const validePassword = await bcrypt.compare(password, admin.password);
+
+//         if(!validePassword){
+//             return res.status(401).json(
+//                 {
+//                     message: "Password is invalid"
+//                 }
+//             );
+//         }
+        
+//         // create token with JWT
+//         const token = jwt.sign(
+//             {id: admin._id, username: admin.username},
+//             process.env.JWT_SECRET,
+//             {expiresIn: '1d'}
+//         )
+
+//         res.status(200).json(
+//             {
+//                 message: "Login successful.",
+//                 token: token,
+//                 data: {
+//                     id: admin._id,
+//                     username: admin.username
+//                 }
+//             }
+//         )
+
+//     } catch (error) {
+//         res.status(401).json(
+//             {
+//                 message: error.message
+//             }
+//         )
+//     }
+// })
+
 router.post('/admin/login', async (req, res) => {
     try {
         const {username, password} = req.body;
-        // find username
+
         const admin = await admin_model.findOne({username});
 
         if(!admin){
-            return res.status(404).json(
+            res.status(404).json(
                 {
-                    message: "Admin not found!"
+                    message: "Your username is invalid!."
                 }
             )
         }
 
-        const validePassword = await bcrypt.compare(password, admin.password);
+        const validPassword = await bcrypt.compare(password, admin.password);
 
-        if(!validePassword){
-            return res.status(401).json(
+        if(!validPassword){
+            res.status(401).json(
                 {
-                    message: "Password is invalid"
+                    message: "Your credentail is invalid."
                 }
-            );
+            )
         }
+
+        const token = jwt.sign(
+            {id: admin.id, username: admin.username},
+            process.env.JWT_SECRET,
+            {expiresIn: "1d"}
+        );
 
         res.status(200).json(
             {
-                message: "Login successful.",
+                message: "Login admin successful.",
+                token: token,
                 data: {
                     id: admin._id,
                     username: admin.username
                 }
             }
         )
-
+        
     } catch (error) {
-        res.status(401).json(
+        res.status(404).json(
             {
                 message: error.message
             }
-        )
+        );
     }
 })
 

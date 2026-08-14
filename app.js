@@ -607,6 +607,7 @@
 import myConnection from './database/connection.js';
 import express from 'express';
 import route from './routes/adminApi.js'
+import 'dotenv/config'
 
 // create variable variable for mothod express from express module
 const app = express();
