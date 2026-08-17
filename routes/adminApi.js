@@ -2,10 +2,12 @@ import express from 'express';
 import admin_model from '../model/Admin.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+// import authMiddleware from '../middleware/auth.js'
+import admin_middleware from '../middleware/adminAuth.js';
 
 const router = express.Router();
 
-router.get('/admin', async (req, res) => {
+router.get('/admin', admin_middleware, async (req, res) => {
     try {
         const admins = await admin_model.find();
         res.status(200).json(
@@ -149,6 +151,14 @@ router.post('/admin/login', async (req, res) => {
                 message: error.message
             }
         );
+    }
+})
+
+router.post('/admin/logout', async (req, res) => {
+    try {
+        
+    } catch (error) {
+        
     }
 })
 
