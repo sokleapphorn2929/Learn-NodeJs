@@ -154,11 +154,19 @@ router.post('/admin/login', async (req, res) => {
     }
 })
 
-router.post('/admin/logout', async (req, res) => {
+router.post('/admin/logout', admin_middleware, async (req, res) => {
     try {
-        
+        res.status(200).json(
+            {
+                message: "Logout successful."
+            }
+        )
     } catch (error) {
-        
+        res.status(500).json(
+            {
+                message: error.message
+            }
+        )
     }
 })
 
