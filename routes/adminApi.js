@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 // import authMiddleware from '../middleware/auth.js'
 import admin_middleware from '../middleware/adminAuth.js';
+import logger from '../config/logger.js';
 
 const router = express.Router();
 
@@ -104,6 +105,60 @@ router.post('/admin', async (req, res) => {
 //     }
 // })
 
+// ================================LOGIN_API======================================
+
+// router.post('/admin/login', async (req, res) => {
+//     try {
+//         const {username, password} = req.body;
+
+//         const admin = await admin_model.findOne({username});
+
+//         if(!admin){
+//             res.status(404).json(
+//                 {
+//                     message: "Your username is invalid!."
+//                 }
+//             )
+//         }
+
+//         const validPassword = await bcrypt.compare(password, admin.password);
+
+//         if(!validPassword){
+//             res.status(401).json(
+//                 {
+//                     message: "Your credentail is invalid."
+//                 }
+//             )
+//         }
+
+//         const token = jwt.sign(
+//             {id: admin.id, username: admin.username},
+//             process.env.JWT_SECRET,
+//             {expiresIn: "1d"}
+//         );
+
+//         res.status(200).json(
+//             {
+//                 message: "Login admin successful.",
+//                 token: token,
+//                 data: {
+//                     id: admin._id,
+//                     username: admin.username
+//                 }
+//             }
+//         )
+        
+//     } catch (error) {
+//         res.status(404).json(
+//             {
+//                 message: error.message
+//             }
+//         );
+//     }
+// })
+
+// =========================LOGIN_WITH_WISTON=========================
+
 router.post('/admin/login', async (req, res) => {
     try {
         const {username, password} = req.body;
@@ -111,7 +166,8 @@ router.post('/admin/login', async (req, res) => {
         const admin = await admin_model.findOne({username});
 
         if(!admin){
-            res.status(404).json(
+            logger.warn(`Failed login attempt: Username '${username}' not found.`); // winston
+            return res.status(404).json(
                 {
                     message: "Your username is invalid!."
                 }
@@ -121,7 +177,8 @@ router.post('/admin/login', async (req, res) => {
         const validPassword = await bcrypt.compare(password, admin.password);
 
         if(!validPassword){
-            res.status(401).json(
+            logger.warn(`Failed login attempt: Incorrect password for username '${username}'.`); // winston
+            return res.status(401).json(
                 {
                     message: "Your credentail is invalid."
                 }
@@ -133,6 +190,8 @@ router.post('/admin/login', async (req, res) => {
             process.env.JWT_SECRET,
             {expiresIn: "1d"}
         );
+
+        logger.info(`Admin logged in successfully: '${username}'`); // winston
 
         res.status(200).json(
             {
@@ -146,6 +205,9 @@ router.post('/admin/login', async (req, res) => {
         )
         
     } catch (error) {
+
+        logger.error(`Login error: ${error.message}`, {stack: error.stack}); // winston
+
         res.status(404).json(
             {
                 message: error.message
