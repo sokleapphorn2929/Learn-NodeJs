@@ -618,14 +618,18 @@ app.use(express.json());
 // create prefix for router
 app.use("/api", route);
 
-// create web sever
-myConnection()
-.then(() => {
-    // listen to port 3000
-    app.listen(3000, () => {
-        console.log("http://localhost:3000/api/admin");
+if(process.env.NODE_ENV !== 'test'){
+    // create web sever
+    myConnection()
+    .then(() => {
+        // listen to port 3000
+        app.listen(3000, () => {
+            console.log("http://localhost:3000/api/admin");
+        })
     })
-})
-.catch((error) => {
-    console.log(error);
-})
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
+export default app;
