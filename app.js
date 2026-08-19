@@ -604,13 +604,31 @@
 
 // ============================New Practice====================================
 
-import myConnection from './database/connection.js';
+// import myConnection from './database/connection.js';
 import express from 'express';
 import route from './routes/adminApi.js'
-import 'dotenv/config'
+import 'dotenv/config';
+import { Server } from 'socket.io';
+import http from 'http';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 
 // create variable variable for mothod express from express module
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const server = http.createServer(app);
+const io = new Server(server,
+    {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"]
+        }
+    }
+);
 
 // convert data to json concept
 app.use(express.json());
@@ -618,12 +636,25 @@ app.use(express.json());
 // create prefix for router
 app.use("/api", route);
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+io.on('connection', (socket) => {
+    console.log(`user connected to server: ${socket.id}`);
+
+    socket.on('disconnect', () => {
+        console.log(`user disconnected to server: ${socket.id}`);
+    })
+})
+
 if(process.env.NODE_ENV !== 'test'){
     // create web sever
-    myConnection()
+    // myConnection()
+    mongoose.connect(process.env.DB_URI)
     .then(() => {
         // listen to port 3000
-        app.listen(3000, () => {
+        server.listen(3000, () => {
             console.log("http://localhost:3000/api/admin");
         })
     })

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.io Test</title>
+</head>
+<body>
+    <h2>Socket.io Connection Test</h2>
+    <p>សូមបើក F12 (Console) ដើម្បីមើលលទ្ធផលនៃការតភ្ជាប់។</p>
+
+    <!-- នាំចូល Socket.io Client Script (វាត្រូវបាន Serve ដោយស្វ័យប្រវត្តពី Server របស់អ្នក) -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // ភ្ជាប់ទៅកាន់ Server (localhost:3000)
+        const socket = io();
+
+        socket.on('connect', () => {
+            console.log('តភ្ជាប់បានសម្រេច! Socket ID:', socket.id);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('បានផ្តាច់ការតភ្ជាប់ពី Server');
+        });
+    </script>
+</body>
+</html>
