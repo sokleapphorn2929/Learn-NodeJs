@@ -5,8 +5,47 @@ import jwt from 'jsonwebtoken';
 // import authMiddleware from '../middleware/auth.js'
 import admin_middleware from '../middleware/adminAuth.js';
 import logger from '../config/logger.js';
+import multer from 'multer';
+import path from 'path';
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const fileExtension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + fileExtension);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+router.post('/admin/upload', upload.single('avatar'),(req, res) => {
+    try {
+        if(!req.file){
+            return res.status(400).json(
+                {
+                    message: "Please choose file to upload"
+                }
+            )
+        }
+        res.status(200).json(
+            {
+                message: "Uploaded file successful.",
+                file: req.file
+            }
+        )
+    } catch (error) {
+        res.status(500).json(
+            {
+                message: error.message
+            }
+        )
+    }
+})
 
 router.get('/admin', admin_middleware, async (req, res) => {
     try {

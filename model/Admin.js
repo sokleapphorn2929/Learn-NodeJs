@@ -7,6 +7,7 @@ const admin_validator = new mongoose.Schema(
         gender: {type: String, required: true},
         address: {type: String, required: true},
         password: {type: String, required: true},
+        avatar: { type: String },
         createAt: {type: Date, default: Date.now},
         updateAt: {type: Date, default: null}
     }
